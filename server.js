@@ -1,6 +1,7 @@
 const express = require('express');
 const admin = require('firebase-admin');
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser'); // Import body-parser
+
 const authRoutes = require('./routes/authRoutes');
 const sensorRoutes = require('./routes/sensorRoutes');
 
@@ -11,13 +12,19 @@ const PORT = process.env.PORT || 3000;
 const serviceAccount = require('./config/serviceAccountKey.json');
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://icare-f2f42-default-rtdb.firebaseio.com',  // Ensure this is set correctly
+  databaseURL: 'https://icare-f2f42-default-rtdb.firebaseio.com',
 });
 
-app.use(express.json());
+// Set up body-parser middleware
+app.use(bodyParser.json({ limit: '10mb' })); // Adjust limit as per your requirement
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
+
+// Set up body-parser middleware
+app.use(bodyParser.json({ limit: '10mb' })); // Adjust limit as per your requirement
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/sensor', sensorRoutes);
 
